@@ -4,6 +4,7 @@ import connectDB from "./config/db.js";
 import User from "./models/userModel.js";
 import Project from "./models/projectModel.js";
 import userRoutes from "./routes/userRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js"
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/users",userRoutes);
+app.use("/api/projects",projectRoutes)
 
 app.get("/", (req, res) => {
   res.send("🚀 Coding Collaboration Backend is Running...");
