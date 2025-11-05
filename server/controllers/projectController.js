@@ -165,3 +165,17 @@ export const getProjectById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const executeCode = async (req, res) => {
+    const { code } = req.body;
+    try {
+        let output = '';
+        const originalLog = console.log;
+        console.log = (...args) => { output += args.join(' ') + '\n'; };
+        eval(code);
+        console.log = originalLog;
+        res.json({ output });
+    }catch(error){
+        res.json({ error: error.message });
+    }
+}

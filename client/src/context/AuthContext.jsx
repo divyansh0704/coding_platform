@@ -8,13 +8,15 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const storedtoken = localStorage.getItem('token');
+        if (storedtoken) {
             const userData = JSON.parse(localStorage.getItem('user'));
             if (userData) setUser(userData);
-            // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            setToken(storedtoken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         }
         setLoading(false);
     }, []);
@@ -25,6 +27,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             setUser(user);
+            setToken(token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         } catch (error) {
@@ -38,6 +41,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
             setUser(user);
+            setToken(token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         } catch (error) {
             throw error;
@@ -48,10 +52,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setUser(null);
+        setToken(null);
         delete axios.defaults.headers.common['Authorization'];
     };
     return(
-        <AuthContext.Provider value ={{user,login,register,logout,loading}}>
+        <AuthContext.Provider value ={{user,login,register,logout,loading,token}}>
             {children}
         </AuthContext.Provider>
     )

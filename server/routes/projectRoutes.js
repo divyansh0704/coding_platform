@@ -1,6 +1,6 @@
 import express from "express"
 import protect from "../middleware/authMiddleware.js";
-import { createProject,deleteProject,addCollaborator,updateProject,getUserProjects,createFile,updateFile,deleteFile,setCurrentFile,getProjectById } from "../controllers/projectController.js"
+import { createProject,deleteProject,addCollaborator,updateProject,getUserProjects,createFile,updateFile,deleteFile,setCurrentFile,getProjectById,executeCode } from "../controllers/projectController.js"
 
 const router = express.Router();
 
@@ -15,5 +15,9 @@ router.put("/:projectId/files/:fileId", protect, updateFile);
 router.delete("/:projectId/files/:fileId", protect, deleteFile);
 router.put("/:projectId/current-file", protect, setCurrentFile);
 router.get("/:projectId", protect, getProjectById);
+
+router.post('/execute',protect, executeCode);
+
+
 
 export default router;

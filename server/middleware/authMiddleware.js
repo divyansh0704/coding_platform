@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 const protect = (req, res, next) => {
     console.log("Middleware hit");
-    const token = req.header("Authorization")?.replace("Bearer", "");
+    const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
         return res.status(401).json({ message: "Access denied. No token provided." })
     }

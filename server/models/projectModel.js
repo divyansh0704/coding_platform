@@ -6,14 +6,7 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // language: {
-    //   type: String,
-    //   default: "javascript",
-    // },
-    // code: {
-    //   type: String,
-    //   default: "// Start coding here...",
-    // },
+    
     currentFile: {
       type: String,
       default: 'index.js',
