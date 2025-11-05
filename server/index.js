@@ -1,5 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+import {Server} from "socket.io";
+import {createServer} from "http";
 import connectDB from "./config/db.js";
 import User from "./models/userModel.js";
 import Project from "./models/projectModel.js";
@@ -11,7 +14,30 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const server = createServer(app);
+const io = new Server(server,{
+  cors:{
+    origin:"http://localhost:5173",
+    methods:["GET","POST"]
+  }
+});
+
+io.on("connection",(socket)=>{
+  console.log("user connected:",socket.id);
+
+  socket.on("code-change", (data) => {
+    socket.broadcast.emit("code-change", data);
+  });
+
+  socket.on("disconnect",()=>{
+    console.log("User disconnected:",socket.id);
+  })
+})
+
 app.use(express.json());
+app.use(cors({
+  origin:"http://localhost:5173"
+}));
 
 
 connectDB();
@@ -23,7 +49,7 @@ app.get("/", (req, res) => {
   res.send("🚀 Coding Collaboration Backend is Running...");
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
 

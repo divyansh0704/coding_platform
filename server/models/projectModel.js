@@ -6,19 +6,45 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    language: {
+    // language: {
+    //   type: String,
+    //   default: "javascript",
+    // },
+    // code: {
+    //   type: String,
+    //   default: "// Start coding here...",
+    // },
+    currentFile: {
       type: String,
-      default: "javascript",
-    },
-    code: {
-      type: String,
-      default: "// Start coding here...",
+      default: 'index.js',
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+    files: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        type: {
+          type: String,
+          enum: ['file', 'folder'],
+          default: 'file',
+        },
+        content: {
+          type: String,
+          default: "",
+        },
+        parent: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'File',
+          default: null,
+        },
+      },
+    ],
     collaborators: [
       {
         type: mongoose.Schema.Types.ObjectId,

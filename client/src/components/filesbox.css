@@ -1,0 +1,8 @@
+.file-container{
+    /* border: 1px solid rgb(165, 162, 162); */
+    height: 98%;
+    min-width: 20%;
+    border-radius: 4px;
+    background-color: black;
+    color: white;
+}
